@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <title>Antoree</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/formProcess.js" async></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <link href="https://vjs.zencdn.net/7.20.2/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.20.2/video.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        let div = $(".counter");
+        div.animate({ left: "100px" }, "slow");
+        div.animate({ fontSize: "34px" }, "slow");
+        let staticsContentDetail = $(".staticsContentDetail");
+        staticsContentDetail.animate({ left: "100px" }, "slow");
+        staticsContentDetail.animate({ fontSize: "22px" }, "slow");
+        let staticsItem = $(".staticsItem");
+        staticsItem.fadeIn("slow");
+        staticsItem.css("display", "flex");
+        staticsItem.css("width", "240px");
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/less"></script>
+    <link rel="stylesheet" type="text/css" href="css/kid-landing.less" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="myAntoree"></div>
+
+    <script type="text/babel">
+
+      function HeaderPage() {
+        const [isShowModal, setIshowModal] = React.useState(false);
+        const [modalMessg, setModalMessg] = React.useState({
+          title: "",
+          message: "",
+          modalModel: "",
+        });
+        const Modal = (dataModal: any) => {
+          return (
+            <>
+              <div id="myModal" className="modal">
+                <div className="modal-content">
+                  <div
+                    className={
+                      modalMessg?.modalModel === "success"
+                        ? `modal-header`
+                        : `modal-header-alert`
+                    }
+                  >
+                    <span
+                      className="close"
+                      onClick={() => setIshowModal(false)}
+                    >
+                      &times;
+                    </span>
+                    <h2 id="modalHeader">{modalMessg?.title}</h2>
+                  </div>
+                  <div className="modal-body">
+                    <p>{modalMessg?.message}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        };
+        const validatePhoneNum = (phoneInput: string) => {
+          const re = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+          return re.test(phoneInput);
+        };
+
+        const hanlSubmitForm = async (e) => {
+          e.preventDefault();
+          let name = $("#name").val();
+          let phone = $("#phoneNumber").val();
+          var message = $("#msg").val();
+          const isValidPhone = validatePhoneNum(phone)
+          if (name === "") {
+             $("#errorName").html(`Vui lòng nhập họ tên`);
+            return false;
+          }
+          if (phone === "") {
+             $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
+            return false;
+          }
+          if (!isValidPhone) {
+            $("#errorPhone").html(`Vui lòng nhập đúng định dạng điện thoại`);
+            return false;
+          }
+          else {
+            try {
+              const resp = await fetch(
+                "https://api-v2.prod.antoree.tech/public/learning-requests",
+                {
+                  method: "post",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    name,
+                    email: "test@antoree.com",
+                    phone,
+                    question: "",
+                    tags: "",
+                    utm_source: "LDPKid",
+                    utm_medium: "LDPKid",
+                    utm_campaign: "LDPKid",
+                    utm_email: "",
+                    utm_term: "",
+                    key_mess: "",
+                    track_user: "LDPKid",
+                    campaign_id: "",
+                    campaign_link_id: "",
+                    partner_id: "",
+                  }),
+                }
+              );
+              const data = await resp.json();
+              if (data) {
+                setIshowModal(true);
+                setModalMessg({
+                  title: "Đăng ký thành công",
+                  message:
+                    "Cảm ơn bạn đã đăng ký, chúng tôi sẽ sớm liên hệ lại với bạn",
+                  modalModel: "success",
+                });
+                $("#formAntoree").trigger("reset");
+              }
+            } catch (e) {}
+            return true;
+          }
+        };
+
+        return (
+          <>
+            <section className="headerPage">
+              <div className="pageBody">
+                <div className="logo">
+                  <p className="logoAntoree animate__animated animate__bounceInDown">
+                    Antoree
+                  </p>
+                  <p className="animate__animated animate__bounceInLeft">
+                    LEARN ENGLISH ONLINE 1-ON-1
+                  </p>
+                </div>
+                <div className="welcome">
+                  <h5 className="titleHeader animate__animated animate__backInLeft">
+                    HỌC TIẾNG ANH NHƯ TIẾNG MẸ ĐẺ
+                  </h5>
+                  <p className="soloGan animate__animated animate__flash">
+                    Antoree sẽ đồng hành cùng con trên con đường chinh phục
+                    tiếng Anh!
+                  </p>
+                </div>
+                <div className="formPage">
+                  <div>
+                    <form
+                      method="post"
+                      id={"formAntoree"}
+                      onSubmit={hanlSubmitForm}
+                    >
+                      <div className="formContainer">
+                        <div className="formGroup">
+                          <label className="labelText">Họ tên</label>
+                          <br />
+                          <input
+                            id="name"
+                            className="formControl"
+                            placeholder="Nhập họ tên"
+                            aria-autocomplete="none"
+                            onChange={() => {
+                              $("#errorName").html(``);
+                            }}
+                          />
+                          <p
+                            id={"errorName"}
+                            style={{ color: "red", fontSize: "12px" }}
+                          ></p>
+                        </div>
+                        <div className="formGroup">
+                          <label className="labelText">Số điện thoại</label>
+                          <br />
+                          <input
+                            id="phoneNumber"
+                            className="formControl"
+                            placeholder="Số điện thoại"
+                            onChange={(e) => {
+                              let phone = $("#phoneNumber").val();
+                              const isValid = validatePhoneNum(
+                                e?.target?.value
+                              );
+                              if (!isValid && phone !== "") {
+                                $("#errorPhone").html(
+                                  `Vui lòng nhập sdt hợp lệ`
+                                );
+                              } else {
+                                $("#errorPhone").html(``);
+                              }
+                            }}
+                          />
+                          <p
+                            id={"errorPhone"}
+                            style={{ color: "red", fontSize: "12px" }}
+                          ></p>
+                        </div>
+                        <div className="formGroup">
+                          <label className="labelText">Lời nhắn</label>
+                          <br />
+                          <textarea
+                            className="formControlTextarea"
+                            id="msg"
+                            placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kì lời nhắn hoặc thắc mắc nào"
+                          ></textarea>
+                          <p
+                            id={"error"}
+                            style={{ color: "red", fontSize: "12px" }}
+                          ></p>
+                        </div>
+                        <div className="formGroupFooter">
+                          <button className="buttonAntoreeWarning" id="buttonSubmit">
+                            Đăng ký ngay
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {isShowModal ? <Modal dataM /> : null}
+            </section>
+          </>
+        );
+      }
+      function Benefit() {
+        return (
+          <>
+            <section className="benefit">
+              <h1 className="benefitTitle">
+                XÓA TAN BỆNH SỢ TIẾNG ANH TẠI ANTOREE
+              </h1>
+              <div className="pageBody">
+                <div className="benefitContainer">
+                  <div className="benefitContent">
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/note1.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                    <div className="benefitItem">
+                      <img
+                        src="images/line.png"
+                        alt={"antore"}
+                        style={{ marginTop: "20px" }}
+                        className="benefitImg"
+                      />
+                    </div>
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/search.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                    <div className="benefitItem">
+                      <img
+                        src="images/line.png"
+                        alt={"antore"}
+                        style={{ marginTop: "20px" }}
+                        className="benefitImg"
+                      />
+                    </div>
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/trial.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                    <div className="benefitItem">
+                      <img
+                        src="images/line.png"
+                        alt={"antore"}
+                        style={{ marginTop: "20px" }}
+                        className="benefitImg"
+                      />
+                    </div>
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/gift-box.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+      function Classes() {
+        const [isMouseIndex, setMouseMoveIndex] = React.useState("");
+        const dataClasses = [
+          {
+            id: 1,
+            content:
+              "Với cách dạy linh hoạt, không có áp lực với điểm số và\n" +
+              "                          bài tập về nhà, những buổi học của con tại Antoree sẽ\n" +
+              "                          chỉ toàn là niềm vui",
+            title: "VUI VẺ",
+            video: "videos/videosample.mp4",
+            url: "https://ied.eu/wp-content/uploads/2018/05/brand-1.png",
+          },
+          {
+            id: 2,
+            content:
+              "Không chỉ gò bó với những phần ngữ pháp nặng nề nhàm chán, các con sẽ được học các chủ đề theo sở thích và các mối quan tâm của mình, tạo sự hứng thú cho các con khi học cùng các thầy cô",
+            title: "GẦN GŨI",
+            video: "videos/videosample.mp4",
+            url: "https://ied.eu/wp-content/uploads/2018/05/brand-1.png",
+          },
+          {
+            id: 3,
+            content:
+              "Bất kì học viên nào đến với Antoree đều sẽ được học với tốc độ cùng phương pháp học tương ứng theo trình độ hiện tại và khả năng tiếp thu",
+            title: "TÙY THEO NĂNG LỰC",
+            video: "videos/videosample.mp4",
+            url: "https://ied.eu/wp-content/uploads/2018/05/brand-1.png",
+          },
+          {
+            id: 4,
+            content:
+              "Việc tương tác 1 - 1 giữa giáo viên và học viên xuyên suốt toàn bộ buổi học tạo cho con thói quen sử dụng tiếng Anh liên tục, giúp con tăng khả năng phản xạ với  tiếng Anh",
+            title: "PHẢN XẠ",
+            video: "videos/videosample.mp4",
+            url: "https://ied.eu/wp-content/uploads/2018/05/brand-1.png",
+          },
+          {
+            id: 5,
+            content:
+              "Việc tương tác 1 - 1 giữa giáo viên và học viên xuyên suốt toàn bộ buổi học tạo cho con thói quen sử dụng tiếng Anh liên tục, giúp con tăng khả năng phản xạ với  tiếng Anh",
+            title: "KIỂM TRA ĐỊNH KÌ",
+            video: "videos/videosample.mp4",
+            url: "https://ied.eu/wp-content/uploads/2018/05/brand-1.png",
+          },
+        ];
+
+        return (
+          <>
+            <section className="antoreeClass">
+              <div className="pageBody">
+                <h1 className="antoreeClassTitle">
+                  NHỮNG BUỔI HỌC TẠI ANTOREE DIỄN RA NHƯ THẾ NÀO?
+                </h1>
+                <div
+                  className="antoreeClassContainer"
+                  style={{ display: "block" }}
+                >
+                  {dataClasses?.map((item: any, index: number) => (
+                    <>
+                      {(index + 1) % 2 === 0 ? (
+                        <>
+                          <div className="antoreeClassItem ">
+                            <div className="contentItemRight animate__animated animate__backInLeft">
+                              <p className="titleIntro">{item?.title}</p>
+                              <p className="contentIntro">{item?.content}</p>
+                            </div>
+
+                            <div
+                              className={`videoItem${
+                                index + 1
+                              } animate__animated animate__backInRight`}
+                              key={item?.id}
+                            >
+                              <div
+                                style={{ marginTop: "100px" }}
+                                className="videoIframe "
+                              >
+                                <video
+                                  id="my-video"
+                                  className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                                  controls
+                                  width="240px"
+                                  preload="auto"
+                                  data-setup="{}"
+                                >
+                                  <source src={item?.video} type="video/mp4" />
+                                  <p className="vjs-no-js">
+                                    To view this video please enable JavaScript,
+                                    and consider upgrading to a web browser that
+                                    <a
+                                      href="https://videojs.com/html5-video-support/"
+                                      target="_blank"
+                                    >
+                                      supports HTML5 video
+                                    </a>
+                                  </p>
+                                </video>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="antoreeClassItem">
+                          <div
+                            className={
+                              item?.id === isMouseIndex
+                                ? `imgFrame animate__animated animate__backOutLeft `
+                                : `imgFrame animate__animated animate__backInLeft`
+                            }
+                            style={{
+                              position: "absolute",
+                              marginTop: "200px",
+                              zIndex: "50",
+                              display: "flex",
+                            }}
+                          >
+                            <img
+                              src="images/Friends_2.png"
+                              className="imgFriendItem"
+                              alt="sls"
+                            />
+                            <img
+                              src="images/Friends_1.png"
+                              className="imgFriendItem"
+                              alt="sls"
+                            />
+                            <img
+                              src="images/Friends_2.png"
+                              className="imgFriendItem"
+                              alt="sls"
+                            />
+                          </div>
+                          <div
+                            className={`videoItem${
+                              index + 1
+                            } animate__animated animate__backInLeft`}
+                            key={item?.id}
+                          >
+                            <div
+                              style={{ marginTop: "100px", zIndex: "100" }}
+                              className="videoIframe  animate__animated animate__backInLeft"
+                              onMouseOver={() => {
+                                setMouseMoveIndex(item?.id);
+                              }}
+                              onMouseLeave={() => {
+                                setMouseMoveIndex("");
+                              }}
+                            >
+                              <video
+                                id="my-video"
+                                className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                                controls
+                                width="330px"
+                                preload="auto"
+                                data-setup="{}"
+                              >
+                                <source src={item?.video} type="video/mp4" />
+                                <p className="vjs-no-js">
+                                  To view this video please enable JavaScript,
+                                  and consider upgrading to a web browser that
+                                  <a
+                                    href="https://videojs.com/html5-video-support/"
+                                    target="_blank"
+                                  >
+                                    supports HTML5 video
+                                  </a>
+                                </p>
+                              </video>
+                            </div>
+                          </div>
+                          <div className="contentItemLeft animate__animated animate__backInRight">
+                            <p className="titleIntro">{item?.title}</p>
+                            <p className="contentIntro">{item?.content}</p>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+      function FeedBack() {
+        const arrdata = [
+          {
+            id: 1,
+            useName: "Nguyen Van A",
+            title: "Phụ huynh bé Hoàng Bách",
+            feedbackContent:
+              "Bạn Bách nhà mình có vốn từ vựng rất khá nhưng khả năng giao tiếp với người nước ngoài khá rụt rè, nhưng sau thời gian học mình thấy bạn tiến bộ rất nhiều.\n" +
+              "Sau hơn 20 buổi học (khoảng 2 tháng), bạn đã thi đỗ kì thi Flyer với điểm là 15/15.\n" +
+              "Ngoài việc con trau dồi kiến thức để làm các bài tập trên lớp, con còn ứng dụng được cả thực tế khi con giao tiếp với những người nước ngoài mà con gặp.",
+          },
+          {
+            id: 2,
+            useName: "Nguyen Van B",
+            title: "Phụ huynh bé Thảo nhi",
+            feedbackContent:
+              "Được học tiếng Anh 1 kèm 1 cùng thầy Joshua, con thấy rất hứng thú và thoải mái. Thầy rất thân thiện và nhiệt tình. Trong các buổi học con vừa được học vừa được trò chuyện và chia sẻ cùng thầy. Thầy giống như một người bạn thân sống ở nước ngoài của con vậy. Nhờ thầy mà kỹ năng nghe nói của con tiến bộ rất nhanh và bây giờ con có thể tự tin giao tiếp bằng tiếng Anh mà không còn nhút nhát như trước nữa.",
+          },
+          {
+            id: 3,
+            useName: "Nguyen Van C",
+            title: "",
+            feedbackContent:
+              "Mình học tiếng Anh cùng với cô Zoria. Mỗi ngày mình đều mong đợi tới giờ học để được học cùng cô. Cô thường chỉ mình học thuộc từ mới bằng cách chơi game, học hát, hay kể chuyện. Các bạn hãy học thử, mình tin chắc rằng các bạn sẽ thích như mình đó!",
+          },
+        ];
+        return (
+          <>
+            <section className="feedBack">
+              <div className="pageBody">
+                <h1 className="feedBackTitle">
+                  PHỤ HUYNH VÀ HỌC VIÊN NÓI GÌ VỀ ANTOREE
+                </h1>
+                <div className="feedBackContainer">
+                  <div className="feedBackContentItem">
+                    <div className="feedBackContent">
+                      {arrdata?.map((item, index) => (
+                        <>
+                          <div
+                            className="feedBackItem"
+                            style={
+                              item?.id === 1
+                                ? { backgroundColor: "#F2C8BA" }
+                                : { backgroundColor: "#f8ae06" }
+                            }
+                          >
+                            <p className="feedBackItemContent">
+                              {item?.feedbackContent}
+                            </p>
+                            <div className="userFeedBack">
+                              <div className="avatar">
+                                <img
+                                  alt="antoree"
+                                  src="images/user1.jpg"
+                                  className="imgUserFeedBack"
+                                />
+                              </div>
+                              <div className="userInfo">
+                                <div className="userName">
+                                  <p>{item?.useName}</p>
+                                  <p style={{ fontSize: "13px" }}>
+                                    {item?.title}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="feedBackVideoContainer">
+                  <div className="feedBackVideo">
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+
+      function AntoreeStatics() {
+        return (
+          <>
+            <section className="staticsAntoree">
+              <div className="pageBody">
+                <h1 className="staticsTitle animate__animated animate__backInDown">
+                  NHỮNG CON SỐ BIẾT NÓI
+                </h1>
+                <div className="staticsContainer" style={{ marginTop: "10px" }}>
+                  <div className="staticsContent">
+                    <div className="staticsItem">
+                      <p className="counter  animate__animated animate__bounceIn">
+                        2000+
+                      </p>
+                      <p className="staticsContentDetail">GIÁO VIÊN</p>
+                    </div>
+                    <div className="staticsItem animate__animated animate__bounceIn">
+                      <p className="counter  animate__animated animate__bounceIn">
+                        11.000+
+                      </p>
+                      <p className="staticsContentDetail">HỌC VIÊN</p>
+                    </div>
+                    <div className="staticsItem animate__animated animate__bounceIn">
+                      <p className="counter  animate__animated animate__bounceIn">
+                        19.000+
+                      </p>
+                      <p className="staticsContentDetail">KHÓA HỌC</p>
+                    </div>
+                    <div className="staticsItem animate__animated animate__bounceIn">
+                      <p className="counter  animate__animated animate__bounceIn">
+                        7+
+                      </p>
+                      <p className="staticsContentDetail">NĂM PHÁT TRIỂN</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+      function AntoreePartner() {
+        return (
+          <section className="parterAntoree">
+            <div className="pageBody">
+              <h1 className="parterTitle">NHỮNG ĐỐI TÁC CỦA ANTOREE</h1>
+              <div className="parterContainer">
+                <div className="parterContent">
+                  <div className="parterItem">
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/mamtuoicuoi.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/customer-client-3.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/bic.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/gws.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                  </div>
+                  <div className="parterItem">
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/customer-client-5.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/ybox.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/founder.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/vng.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                  </div>
+                  <div className="parterItem">
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/ybox.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/tnt.svg"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/img_nestle.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/img_sanofi.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                  </div>
+                  <div className="parterItem">
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/img_aia.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                    <div className="parterItemContent">
+                      <img
+                        src="images/logo-parter/img_insee.png"
+                        alt="Antoree parter"
+                        className="partnerImg"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+      function NewsAndEvent() {
+        return (
+          <section className="newsEvent">
+            <div className="pageBody">
+              <h1 className="newsEventTitle">TIN TỨC VÀ SỰ KIỆN</h1>
+              <div className="newsEventContainer">
+                <div className="newsEventItem">
+                  <div className="newsEventImg">
+                    <img
+                      src="images/vtc14.png"
+                      className="imgEventItem"
+                      alt="antoree"
+                    />
+                  </div>
+                  <div className="newsEventContent">
+                    <p>Mô hình học Tiếng Anh 1 kèm 1 tại antoree.com</p>
+                  </div>
+                </div>
+                <div className="newsEventItem">
+                  <div className="newsEventImg">
+                    <img
+                      src="images/eva.png"
+                      className="imgEventItem"
+                      alt="antoree"
+                    />
+                  </div>
+                  <div className="newsEventContent">
+                    <p>
+                      Antoree – Giúp con chinh phục tiếng Anh với phương pháp
+                      học “một kèm một”
+                    </p>
+                  </div>
+                </div>
+                <div className="newsEventItem">
+                  <div className="newsEventImg">
+                    <img
+                      src="images/dantri.png"
+                      className="imgEventItem"
+                      alt="antoree"
+                    />
+                  </div>
+                  <div className="newsEventContent">
+                    <p>
+                      Học tiếng Anh trực tuyến 1 kèm 1 tại nhà không sợ Covid-19
+                      bùng phát
+                    </p>
+                  </div>
+                </div>
+                <div className="newsEventItem">
+                  <div className="newsEventImg">
+                    <img
+                      src="images/tech.png"
+                      className="imgEventItem"
+                      alt="antoree"
+                    />
+                  </div>
+                  <div className="newsEventContent">
+                    <p>
+                      The 12 new Vietnamese startups out of Topica’s Founder’s
+                      Institute
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+      function RegisterPage() {
+        return (
+          <section className="registerPage">
+            <div className="pageBody">
+              <h1 className="register">
+                CÙNG CON TÌM LẠI NIỀM SAY MÊ TIẾNG ANH TẠI ANTOREE!
+              </h1>
+              <p className="regiserSologan">
+                Đăng ký ngay để hưởng ưu đãi học thử trong 8 buổi - 4 tuần chỉ
+                với 900.000 đồng
+              </p>
+              <div className="formContainer">
+                <div className="formContent">
+                  <form className="formPageBody">
+                    <div className="formGroup">
+                      <label className="labelText">Họ tên</label>
+                      <br />
+                      <input
+                        className="formControl"
+                        placeholder="Nhập họ tên"
+                      />
+                    </div>
+                    <div className="formGroup">
+                      <label className="labelText">Số điện thoại</label>
+                      <br />
+                      <input
+                        className="formControl"
+                        placeholder="Số điện thoại"
+                      />
+                    </div>
+                    <div className="formGroup">
+                      <label className="labelText">Lời nhắn</label>
+                      <br />
+                      <textarea
+                        className="formControl"
+                        placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kì lời nhắn hoặc thắc mắc nào"
+                      ></textarea>
+                    </div>
+                    <div className="formGroupFooter">
+                      <button className="buttonAntoreeWarning">
+                        Đăng ký ngay
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+      function Footer() {
+        return (
+          <>
+            <section className="footerPage">
+              <div className="pageBody">
+                <div className="supportContainer">
+                  <div className="supportItem">
+                    <div className="supportCustomer">
+                      <h5 className="textSupport">HỖ TRỢ KHÁCH HÀNG</h5>
+                      <ul className="infoSupport">
+                        <li className="infoSupportItem">
+                          Hotline: 1800 6806 / 090 963 6002
+                        </li>
+                        <li className="infoSupportItem">
+                          Email hello@antoree.com
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="supportCustomer">
+                      <h5 className="textSupport">Phản hồi về dịch vụ</h5>
+                      <ul className="infoSupport">
+                        <li className="infoSupportItem">ceo@antoree.com</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="supportItem">
+                    <div className="supportCustomer">
+                      <h5 className="textSupport">THÔNG TIN DỊCH VỤ</h5>
+                      <ul className="infoSupport">
+                        <li className="infoSupportItem">Điều khoản sử dụng</li>
+                        <li className="infoSupportItem">Chính sách bảo mật</li>
+                        <li className="infoSupportItem">
+                          Chính sách hoàn tiền
+                        </li>
+                        <li className="infoSupportItem">FAQs</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="supportItem">
+                    <div className="supportCustomer">
+                      <h5 className="textSupport">KẾT NỐI VỚI ANTOREE</h5>
+                      <ul className="infoSupport">
+                        <li className="infoSupportItem">Cộng đồng</li>
+                        <li className="infoSupportItem">
+                          <button className="buttonAntoree">
+                            Trở thành giáo viên
+                          </button>
+                        </li>
+                        <li className="infoSupportItem">
+                          <div className="socialContainer">
+                            <img
+                              alt="sl"
+                              className="socialItem"
+                              src="images/zalo.png"
+                            />
+                            <img
+                              alt="sl"
+                              className="socialItem"
+                              src="images/facebook.5afbc40c.svg"
+                            />
+                            <img
+                              alt="sl"
+                              className="socialItem"
+                              src="images/youtube.ce6dfd9a.svg"
+                            />
+                            <img
+                              alt="sl"
+                              className="socialItem"
+                              src="images/skype.4ed944cf.svg"
+                            />
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="supportItem">
+                    <div className="supportCustomer">
+                      <h5 className="textSupport">
+                        TẢI ỨNG DỤNG TRÊN ĐIỆN THOẠI
+                      </h5>
+                      <ul className="infoSupport">
+                        <li className="infoSupportItem">
+                          <img
+                            alt="sl"
+                            className="socialItem"
+                            src="images/googleplay.png"
+                          />
+                          <img
+                            alt="sl"
+                            className="socialItem"
+                            src="images/apple-store.png"
+                          />
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="infoCompany">
+                  <div className="infoCompanyItem">
+                    <div className="contactItem">
+                      <p>
+                        Công ty Giáo dục và Đào tạo ANTOREE INTERNATIONAL PTE.
+                        LTD. (MST: 201436698Z)
+                      </p>
+                      <p className="contactItemDetail">
+                        Trụ sở chính: 10 Anson Road, #27-15, International
+                        Plaza, Singapore 079903
+                      </p>
+                    </div>
+                    <div className="contactItem">
+                      <p>
+                        Đối tác đại diện tại Việt Nam: CÔNG TY TNHH PHÁT TRIỂN
+                        GIÁO DỤC ANTOREE (MST: 0313769851)
+                      </p>
+                      <p className="contactItemDetail">
+                        Trụ sở chính: 187/7 Điện Biên Phủ, P. Đa Kao, Q 1, TP Hồ
+                        Chí Minh, Việt Nam
+                      </p>
+                    </div>
+                    <div className="contactItem">
+                      <p>Văn phòng đại diện, tiếp khách và nhận thư:</p>
+                      <p className="contactItemDetail">
+                        Tại TP.HCM: Lô 7F-03, Tầng 7, Tòa nhà Flemington, 182 Lê
+                        Đại Hành, Phường 15, Quận 11, Hồ Chí Minh
+                        <br />
+                        Tại Hà Nội: Tầng 17, toà nhà Đa Năng, 169 Nguyễn Ngọc
+                        Vũ, Phường Trung Hoà, Quận Cầu Giấy, Hà Nội
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+      function Main() {
+        return (
+          <div className="pageContainer">
+            <HeaderPage />
+            <Classes />
+            <Benefit />
+            <FeedBack />
+            <AntoreeStatics />
+            <AntoreePartner />
+            <NewsAndEvent />
+            <RegisterPage />
+            <Footer />
+          </div>
+        );
+      }
+
+      ReactDOM.render(<Main />, document.getElementById("myAntoree"));
+    </script>
+  </body>
+</html>
