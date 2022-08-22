@@ -45,6 +45,7 @@
     <div id="myAntoree"></div>
 
     <script type="text/babel">
+      "use strict";
 
       function HeaderPage() {
         const [isShowModal, setIshowModal] = React.useState(false);
@@ -85,26 +86,34 @@
           const re = /((09|03|07|08|05)+([0-9]{8})\b)/g;
           return re.test(phoneInput);
         };
-
+        const validateEmail = (email: string) => {
+          const emailValid = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+          return emailValid.test(email);
+        };
+        function closeModal() {
+          setIshowModal(false);
+        }
         const hanlSubmitForm = async (e) => {
           e.preventDefault();
           let name = $("#name").val();
           let phone = $("#phoneNumber").val();
+          let email = $("#email").val();
           var message = $("#msg").val();
-          const isValidPhone = validatePhoneNum(phone)
+          const isValidPhone = validatePhoneNum(phone);
+          const isValidEmail = validateEmail(email);
+
           if (name === "") {
-             $("#errorName").html(`Vui lòng nhập họ tên`);
+            $("#errorName").html(`Vui lòng nhập họ tên`);
             return false;
           }
           if (phone === "") {
-             $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
+            $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
             return false;
           }
           if (!isValidPhone) {
             $("#errorPhone").html(`Vui lòng nhập đúng định dạng điện thoại`);
             return false;
-          }
-          else {
+          } else {
             try {
               const resp = await fetch(
                 "https://api-v2.prod.antoree.tech/public/learning-requests",
@@ -143,6 +152,7 @@
                   modalModel: "success",
                 });
                 $("#formAntoree").trigger("reset");
+                setTimeout(closeModal, 5000);
               }
             } catch (e) {}
             return true;
@@ -235,7 +245,10 @@
                           ></p>
                         </div>
                         <div className="formGroupFooter">
-                          <button className="buttonAntoreeWarning" id="buttonSubmit">
+                          <button
+                            className="buttonAntoreeWarning"
+                            id="buttonSubmit"
+                          >
                             Đăng ký ngay
                           </button>
                         </div>
@@ -571,39 +584,201 @@
                 <div className="feedBackContainer">
                   <div className="feedBackContentItem">
                     <div className="feedBackContent">
-                      {arrdata?.map((item, index) => (
-                        <>
-                          <div
-                            className="feedBackItem"
-                            style={
-                              item?.id === 1
-                                ? { backgroundColor: "#F2C8BA" }
-                                : { backgroundColor: "#f8ae06" }
-                            }
-                          >
-                            <p className="feedBackItemContent">
-                              {item?.feedbackContent}
-                            </p>
-                            <div className="userFeedBack">
-                              <div className="avatar">
-                                <img
-                                  alt="antoree"
-                                  src="images/user1.jpg"
-                                  className="imgUserFeedBack"
-                                />
+                      <>
+                        <div
+                          className="feedBackItem"
+                          style={{
+                            backgroundColor: "#F2C8BA",
+                            position: "revert-layer",
+                            marginTop: "100px",
+                          }}
+                        >
+                          <p className="feedBackItemContent">
+                            Bạn Bách nhà mình có vốn từ vựng rất khá nhưng khả
+                            năng giao tiếp với người nước ngoài khá rụt rè,
+                            nhưng sau thời gian học mình thấy bạn tiến bộ rất
+                            nhiều. Sau hơn 20 buổi học (khoảng 2 tháng), bạn đã
+                            thi đỗ kì thi Flyer với điểm là 15/15. Ngoài việc
+                            con trau dồi kiến thức để làm các bài tập trên lớp,
+                            con còn ứng dụng được cả thực tế khi con giao tiếp
+                            với những người nước ngoài mà con gặp.
+                          </p>
+                          <div className="userFeedBack">
+                            <div className="avatar">
+                              <img
+                                alt="antoree"
+                                src="images/user1.png"
+                                className="imgUserFeedBack"
+                              />
+                            </div>
+                            <div className="userInfo">
+                              <div className="userName">
+                                <p style={{ color: "#184429",fontWeight:'600' }}>
+                                  Chị Thùy Nhiên
+                                </p>
+                                <p
+                                  style={{ fontSize: "13px", color: "#343741" }}
+                                >
+                                  Phụ huynh bé Hoàng Bách
+                                </p>
                               </div>
-                              <div className="userInfo">
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    </div>
+                    <div className="feedBackContent">
+                      <>
+                        <div
+                          className="feedBackItem"
+                          style={{
+                            backgroundColor: "#F2C8BA",
+                            position: "revert-layer",
+                            marginTop: "100px",
+                            background: "#46BB6A",
+                            color: "white",
+                          }}
+                        >
+                          <p
+                            className="feedBackItemContent"
+                            style={{ color: "white" }}
+                          >
+                            Được học tiếng Anh 1 kèm 1 cùng thầy Joshua, con
+                            thấy rất hứng thú và thoải mái. Thầy rất thân thiện
+                            và nhiệt tình. Trong các buổi học con vừa được học
+                            vừa được trò chuyện và chia sẻ cùng thầy. Thầy giống
+                            như một người bạn thân sống ở nước ngoài của con
+                            vậy. Nhờ thầy mà kỹ năng nghe nói của con tiến bộ
+                            rất nhanh và bây giờ con có thể tự tin giao tiếp
+                            bằng tiếng Anh mà không còn nhút nhát như trước nữa.
+                          </p>
+                          <div className="userFeedBack">
+                            <div className="avatar">
+                              <img
+                                alt="antoree"
+                                src="images/hamiuser.png"
+                                className="imgUserFeedBack"
+                              />
+                            </div>
+                            <div className="userInfo">
+                              <div className="userName">
                                 <div className="userName">
-                                  <p>{item?.useName}</p>
-                                  <p style={{ fontSize: "13px" }}>
-                                    {item?.title}
-                                  </p>
+                                  <p style={{ color: "white",fontWeight:'600' }}>Bé Hà Mi</p>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </>
-                      ))}
+                        </div>
+                        <div
+                          className="feedBackItem"
+                          style={{
+                            backgroundColor: "#F2C8BA",
+                            position: "revert-layer",
+                            marginTop: "30px",
+                            background: "#F5BB33",
+                          }}
+                        >
+                          <p className="feedBackItemContent">
+                            Mình học tiếng Anh cùng với cô Zoria. Mỗi ngày mình
+                            đều mong đợi tới giờ học để được học cùng cô. Cô
+                            thường chỉ mình học thuộc từ mới bằng cách chơi
+                            game, học hát, hay kể chuyện. Các bạn hãy học thử,
+                            mình tin chắc rằng các bạn sẽ thích như mình đó!
+                          </p>
+                          <div className="userFeedBack">
+                            <div className="avatar">
+                              <img
+                                alt="antoree"
+                                src="images/nganchi.png"
+                                className="imgUserFeedBack"
+                              />
+                            </div>
+                            <div className="userInfo">
+                              <div className="userName">
+                                <p style={{fontWeight:'600'}}>Bé Ngân Chi</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    </div>
+                    <div className="feedBackContent">
+                      <>
+                        <div
+                          className="feedBackItem"
+                          style={{
+                            background: "#FCF1ED",
+                            position: "revert-layer",
+                            marginTop: "100px",
+                          }}
+                        >
+                          <p className="feedBackItemContent">
+                            Khi bé học với thầy được 2 tuần thì chị cho bé đi du
+                            lịch Hongkong. Bé rất tự tin dắt bố đi shopping mà
+                            không cần mẹ. Bé tự tin để nói chuyện bởi vì bé đã
+                            có 2 tuần luyện tập với thầy.
+                          </p>
+                          <div className="userFeedBack">
+                            <div className="avatar">
+                              <img
+                                alt="antoree"
+                                src="images/thanhmaiusser.png"
+                                className="imgUserFeedBack"
+                              />
+                            </div>
+                            <div className="userInfo">
+                              <div className="userName">
+                                <p style={{ color: "#184429",fontWeight:'600' }}>
+                                  Chị Thanh Mai
+                                </p>
+                                <p
+                                  style={{ fontSize: "13px", color: "#343741" }}
+                                >
+                                  Phụ huynh bé Thân Thiết Danh
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="feedBackItem"
+                          style={{
+                            background: "#184429",
+                            position: "revert-layer",
+                            marginTop: "30px",
+                          }}
+                        >
+                          <p
+                            className="feedBackItemContent"
+                            style={{ color: "white" }}
+                          >
+                            Cảm ơn cô Hiền, cách dạy của cô rất hay. Cô có thể
+                            trò chuyện với bé, tâm sự, kể chuyện với bé. Thỉnh
+                            thoảng Hải nhìn qua thì thấy cô với bé đang vẽ, hoặc
+                            đặt câu hỏi, đặt câu đố, rất gần gũi. Hải thấy đây
+                            là một cách học rất tốt, cho bé có thể tự do sáng
+                            tạo, tự do nói chuyện...
+                          </p>
+                          <div
+                            className="userFeedBack"
+                            style={{ color: "white" }}
+                          >
+                            <div className="avatar">
+                              <img
+                                alt="antoree"
+                                src="images/user6.png"
+                                className="imgUserFeedBack"
+                              />
+                            </div>
+                            <div className="userInfo">
+                              <div className="userName">
+                                <p style={{color:'#F2C8BA',fontWeight:'600'}}>Anh Minh Hải</p>
+                                <p style={{ fontSize: "13px" }}>Phụ huynh bé An Nhiên (Bối Bối)</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
                     </div>
                   </div>
                 </div>
@@ -1123,21 +1298,38 @@
           </>
         );
       }
-      function Main() {
-        return (
-          <div className="pageContainer">
-            <HeaderPage />
-            <Classes />
-            <Benefit />
-            <FeedBack />
-            <AntoreeStatics />
-            <AntoreePartner />
-            <NewsAndEvent />
-            <RegisterPage />
-            <Footer />
-          </div>
-        );
+      class Main extends React.Component {
+        render() {
+          return (
+            <div className="pageContainer">
+              <HeaderPage />
+              <Classes />
+              <Benefit />
+              <FeedBack />
+              <AntoreeStatics />
+              <AntoreePartner />
+              <NewsAndEvent />
+              <RegisterPage />
+              <Footer />
+            </div>
+          );
+        }
       }
+      // const Main = () => {
+      //   return (
+      //     <div className="pageContainer">
+      //       <HeaderPage />
+      //       <Classes />
+      //       <Benefit />
+      //       <FeedBack />
+      //       <AntoreeStatics />
+      //       <AntoreePartner />
+      //       <NewsAndEvent />
+      //       <RegisterPage />
+      //       <Footer />
+      //     </div>
+      //   );
+      // }
 
       ReactDOM.render(<Main />, document.getElementById("myAntoree"));
     </script>

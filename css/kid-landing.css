@@ -452,7 +452,7 @@ body::-webkit-scrollbar-thumb {
 }
 .feedBack {
   background: #fbfaf8;
-  height: 100%;
+  height: auto;
 }
 .feedBackItem{
   flex-direction: column;
@@ -472,7 +472,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 24px;
 }
 .feedBackContent{
-  display: flex;
+  display: block;
   margin: auto;
 }
 .feedBackContentItem{
@@ -517,7 +517,7 @@ body::-webkit-scrollbar-thumb {
 .feedBackVideoContainer{
   display: flex;
   justify-content: center;
-  padding: 50px;
+  padding: 100px;
   margin: auto;
 }
 .feedBackContainer {
@@ -542,6 +542,7 @@ body::-webkit-scrollbar-thumb {
   font-size: 34px;
   line-height: 40px;
   text-align: center;
+  padding-top: 20px;
   /* identical to box height, or 118% */
 
   color: #173a24;
@@ -1024,7 +1025,7 @@ body::-webkit-scrollbar-thumb {
     margin: auto;
   }
   .feedBackContentItem{
-    display: flex;
+    display: inline-block;
   }
   .footerPage {
     height: 100vm;
