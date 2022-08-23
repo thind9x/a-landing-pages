@@ -13,7 +13,8 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/formProcess.js" async></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -22,31 +23,15 @@
     <link href="https://vjs.zencdn.net/7.20.2/video-js.css" rel="stylesheet" />
     <script src="https://vjs.zencdn.net/7.20.2/video.min.js"></script>
 
-    <script>
-      $(document).ready(function () {
-        let div = $(".counter");
-        div.animate({ left: "100px" }, "slow");
-        div.animate({ fontSize: "34px" }, "slow");
-        let staticsContentDetail = $(".staticsContentDetail");
-        staticsContentDetail.animate({ left: "100px" }, "slow");
-        staticsContentDetail.animate({ fontSize: "22px" }, "slow");
-        let staticsItem = $(".staticsItem");
-        staticsItem.fadeIn("slow");
-        staticsItem.css("display", "flex");
-        staticsItem.css("width", "240px");
-      });
-    </script>
+    <script type="text/javascript" src="js/slick/slick.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/less"></script>
     <link rel="stylesheet" type="text/css" href="css/kid-landing.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
     <div id="myAntoree"></div>
 
     <script type="text/babel">
-      "use strict";
-
       function HeaderPage() {
         const [isShowModal, setIshowModal] = React.useState(false);
         const [modalMessg, setModalMessg] = React.useState({
@@ -98,20 +83,38 @@
           let name = $("#name").val();
           let phone = $("#phoneNumber").val();
           let email = $("#email").val();
-          var message = $("#msg").val();
+          let msgs = $("#msg").val();
           const isValidPhone = validatePhoneNum(phone);
           const isValidEmail = validateEmail(email);
 
           if (name === "") {
             $("#errorName").html(`Vui lòng nhập họ tên`);
+            $("#name").css("border", "2px solid red");
             return false;
           }
           if (phone === "") {
             $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
+            $("#phoneNumber").css("border", "2px solid red");
+
             return false;
           }
+
           if (!isValidPhone) {
-            $("#errorPhone").html(`Vui lòng nhập đúng định dạng điện thoại`);
+            $("#errorPhone").html(`Vui lòng nhập đúng định dạng số điện thoại`);
+            $("#phoneNumber").css("border", "2px solid red");
+            return false;
+          }
+          if (msgs === "") {
+            $("#errorMessage").html(`Vui lòng nhập nội dung tin nhắn`);
+            $("#msg").css("border", "2px solid red");
+
+            return false;
+          }
+          if (msgs?.length > 3000) {
+            $("#errorMessage").html(
+              `Nội dung ký tự đã vượt quá giới hạn cho phép`
+            );
+            $("#msg").css("border", "2px solid red");
             return false;
           } else {
             try {
@@ -181,6 +184,7 @@
                   </p>
                 </div>
                 <div className="formPage">
+                  <h1 className="headerTitleForm">Đăng ký nhận tư vấn</h1>
                   <div>
                     <form
                       method="post"
@@ -198,6 +202,7 @@
                             aria-autocomplete="none"
                             onChange={() => {
                               $("#errorName").html(``);
+                              $("#name").removeAttr("style");
                             }}
                           />
                           <p
@@ -219,10 +224,11 @@
                               );
                               if (!isValid && phone !== "") {
                                 $("#errorPhone").html(
-                                  `Vui lòng nhập sdt hợp lệ`
+                                  `Vui lòng nhập sdt  hợp lệ`
                                 );
                               } else {
                                 $("#errorPhone").html(``);
+                                $("#phoneNumber").removeAttr("style");
                               }
                             }}
                           />
@@ -232,15 +238,42 @@
                           ></p>
                         </div>
                         <div className="formGroup">
-                          <label className="labelText">Lời nhắn</label>
+                          <label className="labelText">
+                            Lời nhắn (
+                            <span
+                              style={{
+                                fontSize: "13px",
+                                fontWeight: "normal",
+                                color: "red",
+                                marginLeft: "2px",
+                              }}
+                              id={"count"}
+                            >
+                              0
+                            </span>
+                            /3000)
+                          </label>
                           <br />
                           <textarea
                             className="formControlTextarea"
                             id="msg"
-                            placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kì lời nhắn hoặc thắc mắc nào"
+                            onChange={() => {
+                              let msgcount = $("#msg").val();
+                              $("#count").html(msgcount?.length);
+                              if (msgcount?.length > 3000) {
+                                $("#errorMessage").html(
+                                  `Nội dung ký tự đã vượt quá giới hạn cho phép`
+                                );
+                                $("#msg").css("border", "2px solid red");
+                              } else {
+                                $("#errorMessage").html(``);
+                                $("#msg").removeAttr("style");
+                              }
+                            }}
+                            placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kỳ lời nhắn hoặc thắc mắc nào"
                           ></textarea>
                           <p
-                            id={"error"}
+                            id={"errorMessage"}
                             style={{ color: "red", fontSize: "12px" }}
                           ></p>
                         </div>
@@ -257,7 +290,7 @@
                   </div>
                 </div>
               </div>
-              {isShowModal ? <Modal dataM /> : null}
+              {isShowModal ? <Modal /> : null}
             </section>
           </>
         );
@@ -549,7 +582,21 @@
         );
       }
       function FeedBack() {
-
+        const [dataVideoRp, setDataVideoRp] = React.useState([]);
+        React.useEffect(() => {
+          const fetchApi = async () => {
+            const resp = await fetch(
+              "https://api.phuongmychi.vn/api/video-free"
+            );
+            const respData = await resp.json();
+            const dataVideo = respData?.videos;
+            dataVideo?.map((item: any) => {
+              setDataVideoRp(item);
+            });
+          };
+          console.log(dataVideoRp);
+          fetchApi();
+        }, []);
         return (
           <>
             <section className="feedBack">
@@ -589,7 +636,12 @@
                             </div>
                             <div className="userInfo">
                               <div className="userName">
-                                <p style={{ color: "#184429",fontWeight:'600' }}>
+                                <p
+                                  style={{
+                                    color: "#184429",
+                                    fontWeight: "600",
+                                  }}
+                                >
                                   Chị Thùy Nhiên
                                 </p>
                                 <p
@@ -639,7 +691,14 @@
                             <div className="userInfo">
                               <div className="userName">
                                 <div className="userName">
-                                  <p style={{ color: "white",fontWeight:'600' }}>Bé Hà Mi</p>
+                                  <p
+                                    style={{
+                                      color: "white",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    Bé Hà Mi
+                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -671,7 +730,7 @@
                             </div>
                             <div className="userInfo">
                               <div className="userName">
-                                <p style={{fontWeight:'600'}}>Bé Ngân Chi</p>
+                                <p style={{ fontWeight: "600" }}>Bé Ngân Chi</p>
                               </div>
                             </div>
                           </div>
@@ -704,7 +763,12 @@
                             </div>
                             <div className="userInfo">
                               <div className="userName">
-                                <p style={{ color: "#184429",fontWeight:'600' }}>
+                                <p
+                                  style={{
+                                    color: "#184429",
+                                    fontWeight: "600",
+                                  }}
+                                >
                                   Chị Thanh Mai
                                 </p>
                                 <p
@@ -748,8 +812,17 @@
                             </div>
                             <div className="userInfo">
                               <div className="userName">
-                                <p style={{color:'#F2C8BA',fontWeight:'600'}}>Anh Minh Hải</p>
-                                <p style={{ fontSize: "13px" }}>Phụ huynh bé An Nhiên (Bối Bối)</p>
+                                <p
+                                  style={{
+                                    color: "#F2C8BA",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  Anh Minh Hải
+                                </p>
+                                <p style={{ fontSize: "13px" }}>
+                                  Phụ huynh bé An Nhiên (Bối Bối)
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -758,31 +831,11 @@
                     </div>
                   </div>
                 </div>
+                <h1 className="feedBackSubTitle">
+                  Xem thêm chia sẻ của các bậc phụ huynh
+                </h1>
                 <div className="feedBackVideoContainer">
                   <div className="feedBackVideo">
-                    <div className="feedBackVideoItem">
-                      <video
-                        id="my-video"
-                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
-                        controls
-                        width="320px"
-                        style={{ borderRadius: "16px" }}
-                        preload="auto"
-                        data-setup="{}"
-                      >
-                        <source src="videos/videosample.mp4" type="video/mp4" />
-                        <p className="vjs-no-js">
-                          To view this video please enable JavaScript, and
-                          consider upgrading to a web browser that
-                          <a
-                            href="https://videojs.com/html5-video-support/"
-                            target="_blank"
-                          >
-                            supports HTML5 video
-                          </a>
-                        </p>
-                      </video>
-                    </div>
                     <div className="feedBackVideoItem">
                       <video
                         id="my-video"
@@ -1274,38 +1327,81 @@
           </>
         );
       }
+      const Loader = () => {
+        return <div className="loader"></div>;
+      };
       class Main extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            loading: true,
+            error: "",
+          };
+        }
+        componentDidMount = async () => {
+          try {
+            const resp = await fetch(
+              "https://api.phuongmychi.vn/api/video-free"
+            );
+            const respDatata = await resp.json();
+            if (respDatata) {
+              this.setState({
+                loading: false,
+              });
+            }
+          } catch (e) {
+            this.setState({
+              loading: false,
+              error: "error in server",
+            });
+          }
+        };
+        componentWillUnmount = async () => {
+          this.setState({
+            loading: false,
+            error: "",
+          });
+        };
         render() {
-          return (
-            <div className="pageContainer">
-              <HeaderPage />
-              <Classes />
-              <Benefit />
-              <FeedBack />
-              <AntoreeStatics />
-              <AntoreePartner />
-              <NewsAndEvent />
-              <RegisterPage />
-              <Footer />
-            </div>
-          );
+          const { error, loading } = this.state;
+          if (error) {
+            return <div>Error: {error}</div>;
+          } else if (loading) {
+            return (
+              <div>
+                <div>
+                  <h1
+                    style={{
+                      textAlign: "center",
+                      fontSize: "24px",
+                      display: "flex",
+                      justifyContent: "center",
+                      justifyItems: "center",
+                      color: "green",
+                    }}
+                  >
+                    <p className="logoAntoree">Welcome to Antoree</p>
+                  </h1>
+                </div>
+              </div>
+            );
+          } else {
+            return (
+              <div className="pageContainer">
+                <HeaderPage />
+                <Classes />
+                <Benefit />
+                <FeedBack />
+                <AntoreeStatics />
+                <AntoreePartner />
+                <NewsAndEvent />
+                <RegisterPage />
+                <Footer />
+              </div>
+            );
+          }
         }
       }
-      // const Main = () => {
-      //   return (
-      //     <div className="pageContainer">
-      //       <HeaderPage />
-      //       <Classes />
-      //       <Benefit />
-      //       <FeedBack />
-      //       <AntoreeStatics />
-      //       <AntoreePartner />
-      //       <NewsAndEvent />
-      //       <RegisterPage />
-      //       <Footer />
-      //     </div>
-      //   );
-      // }
 
       ReactDOM.render(<Main />, document.getElementById("myAntoree"));
     </script>

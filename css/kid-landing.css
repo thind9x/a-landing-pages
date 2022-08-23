@@ -33,6 +33,28 @@ body::-webkit-scrollbar-thumb {
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid blue;
+  border-right: 16px solid green;
+  border-bottom: 16px solid red;
+  border-left: 16px solid pink;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 .modal-body{
   justify-content: center;
   margin: 20px;
@@ -76,6 +98,28 @@ body::-webkit-scrollbar-thumb {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+.headerTitleForm{
+  /* M / Heading 3 */
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 32px;
+  /* identical to box height, or 145% */
+
+  text-align: center;
+
+  color: #F8AE06;
+
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
 }
 
 .modal-header {
@@ -207,7 +251,7 @@ body::-webkit-scrollbar-thumb {
 }
 .formGroup {
   text-align: left;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 .formGroupFooter {
   display: flex;
@@ -315,7 +359,7 @@ body::-webkit-scrollbar-thumb {
   /* Shadow / Bottom default */
 
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 3.6px 13px rgba(0, 0, 0, 0.07),
-    0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
+  0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
 
   /* Inside auto layout */
@@ -433,7 +477,7 @@ body::-webkit-scrollbar-thumb {
   /* Shadow / Bottom default */
 
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 3.6px 13px rgba(0, 0, 0, 0.07),
-    0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
+  0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
   border-radius: 16px;
 
   /* Inside auto layout */
@@ -546,6 +590,27 @@ body::-webkit-scrollbar-thumb {
   /* identical to box height, or 118% */
 
   color: #173a24;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.feedBackSubTitle{
+  /* M / Heading 3 */
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 32px;
+  /* identical to box height, or 145% */
+
+  text-align: center;
+
+  color: #173A24;
+
 
   /* Inside auto layout */
 
@@ -717,7 +782,7 @@ body::-webkit-scrollbar-thumb {
   /* Shadow / Bottom default */
 
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 3.6px 13px rgba(0, 0, 0, 0.07),
-    0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
+  0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
   border-radius: 16px;
 
   /* Inside auto layout */
@@ -778,11 +843,11 @@ body::-webkit-scrollbar-thumb {
   border-color: #876446;
   border-radius: 8px;
   width: max-content;
-  //background-image: url("../images/videoFrame.png");
-  //background-size: contain;
-  //height: 240px;
-  //background-repeat: no-repeat;
-  //width: max-content;
+//background-image: url("../images/videoFrame.png");
+//background-size: contain;
+//height: 240px;
+//background-repeat: no-repeat;
+//width: max-content;
 
 }
 .videoItem1{
@@ -998,6 +1063,7 @@ body::-webkit-scrollbar-thumb {
   display: flex;
 
 }
+
 @media only screen and (max-width: 800px) {
   .pageBody {
     max-width: 100%;
@@ -1079,7 +1145,7 @@ body::-webkit-scrollbar-thumb {
     background: #ffffff;
     /* Shadow / Bottom default */
 
-    //box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 3.6px 13px rgba(0, 0, 0, 0.07), 0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
+  //box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 3.6px 13px rgba(0, 0, 0, 0.07), 0px 8.4px 23px rgba(0, 0, 0, 0.06), 0px 23px 35px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
   }
   .footerPage {
