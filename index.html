@@ -27,6 +27,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/less"></script>
     <link rel="stylesheet" type="text/css" href="css/kid-landing.css" />
+    <!--    <script>-->
+
+    <!--      $(document).ready(function (){-->
+    <!--        -->
+    <!--      });-->
+    <!--    </script>-->
   </head>
   <body>
     <div id="myAntoree"></div>
@@ -80,33 +86,33 @@
         }
         const hanlSubmitForm = async (e) => {
           e.preventDefault();
-          let name = $("#name").val();
-          let phone = $("#phoneNumber").val();
-          let email = $("#email").val();
-          let msgs = $("#msg").val();
-          const isValidPhone = validatePhoneNum(phone);
-          const isValidEmail = validateEmail(email);
+          let name = $("#name");
+          let phone = $("#phoneNumber");
+          let email = $("#email");
+          let msgs = $("#msg");
+          const isValidPhone = validatePhoneNum(phone.val());
+          const isValidEmail = validateEmail(email.val());
 
-          if (name === "") {
+          if (name.val() === "") {
             $("#errorName").html(`Vui lòng nhập họ tên`);
-            $("#name").css("border", "2px solid red");
+            name.css("border", "2px solid red");
+
             return false;
           }
-          if (phone === "") {
+          if (phone.val() === "") {
             $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
-            $("#phoneNumber").css("border", "2px solid red");
-
+            phone.css("border", "2px solid red");
             return false;
           }
 
           if (!isValidPhone) {
             $("#errorPhone").html(`Vui lòng nhập đúng định dạng số điện thoại`);
-            $("#phoneNumber").css("border", "2px solid red");
+            phone.css("border", "2px solid red");
             return false;
           }
-          if (msgs === "") {
+          if (msgs.val() === "") {
             $("#errorMessage").html(`Vui lòng nhập nội dung tin nhắn`);
-            $("#msg").css("border", "2px solid red");
+            msgs.css("border", "2px solid red");
 
             return false;
           }
@@ -114,7 +120,7 @@
             $("#errorMessage").html(
               `Nội dung ký tự đã vượt quá giới hạn cho phép`
             );
-            $("#msg").css("border", "2px solid red");
+            msgs.css("border", "2px solid red");
             return false;
           } else {
             try {
@@ -127,10 +133,10 @@
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    name,
-                    email: "test@antoree.com",
-                    phone,
-                    question: "",
+                    name: name.val(),
+                    email: "thind@antoree.com",
+                    phone: phone.val(),
+                    question: msgs.val(),
                     tags: "",
                     utm_source: "LDPKid",
                     utm_medium: "LDPKid",
@@ -244,7 +250,7 @@
                               style={{
                                 fontSize: "13px",
                                 fontWeight: "normal",
-                                color: "red",
+                                color: "#F8AE06",
                                 marginLeft: "2px",
                               }}
                               id={"count"}
@@ -260,14 +266,17 @@
                             onChange={() => {
                               let msgcount = $("#msg").val();
                               $("#count").html(msgcount?.length);
+
                               if (msgcount?.length > 3000) {
                                 $("#errorMessage").html(
                                   `Nội dung ký tự đã vượt quá giới hạn cho phép`
                                 );
+                                $("#count").css("color", "red");
                                 $("#msg").css("border", "2px solid red");
                               } else {
                                 $("#errorMessage").html(``);
                                 $("#msg").removeAttr("style");
+                                $("#count").css("color", "#F8AE06");
                               }
                             }}
                             placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kỳ lời nhắn hoặc thắc mắc nào"
@@ -604,6 +613,79 @@
                 <h1 className="feedBackTitle">
                   PHỤ HUYNH VÀ HỌC VIÊN NÓI GÌ VỀ ANTOREE
                 </h1>
+                <div className="feedBackVideoContainer">
+                  <div className="feedBackVideo">
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                    <div className="feedBackVideoItem">
+                      <video
+                        id="my-video"
+                        className="video-js vjs-default-skin vjs-big-play-centered videoItem"
+                        controls
+                        width="320px"
+                        style={{ borderRadius: "16px" }}
+                        preload="auto"
+                        data-setup="{}"
+                      >
+                        <source src="videos/videosample.mp4" type="video/mp4" />
+                        <p className="vjs-no-js">
+                          To view this video please enable JavaScript, and
+                          consider upgrading to a web browser that
+                          <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                          >
+                            supports HTML5 video
+                          </a>
+                        </p>
+                      </video>
+                    </div>
+                  </div>
+                </div>
                 <div className="feedBackContainer">
                   <div className="feedBackContentItem">
                     <div className="feedBackContent">
@@ -1327,9 +1409,7 @@
           </>
         );
       }
-      const Loader = () => {
-        return <div className="loader"></div>;
-      };
+
       class Main extends React.Component {
         constructor(props) {
           super(props);
@@ -1356,50 +1436,23 @@
             });
           }
         };
-        componentWillUnmount = async () => {
-          this.setState({
-            loading: false,
-            error: "",
-          });
-        };
+
         render() {
           const { error, loading } = this.state;
-          if (error) {
-            return <div>Error: {error}</div>;
-          } else if (loading) {
-            return (
-              <div>
-                <div>
-                  <h1
-                    style={{
-                      textAlign: "center",
-                      fontSize: "24px",
-                      display: "flex",
-                      justifyContent: "center",
-                      justifyItems: "center",
-                      color: "green",
-                    }}
-                  >
-                    <p className="logoAntoree">Welcome to Antoree</p>
-                  </h1>
-                </div>
-              </div>
-            );
-          } else {
-            return (
-              <div className="pageContainer">
-                <HeaderPage />
-                <Classes />
-                <Benefit />
-                <FeedBack />
-                <AntoreeStatics />
-                <AntoreePartner />
-                <NewsAndEvent />
-                <RegisterPage />
-                <Footer />
-              </div>
-            );
-          }
+
+          return (
+            <div className="pageContainer">
+              <HeaderPage />
+              <Classes />
+              <Benefit />
+              <FeedBack />
+              <AntoreeStatics />
+              <AntoreePartner />
+              <NewsAndEvent />
+              <RegisterPage />
+              <Footer />
+            </div>
+          );
         }
       }
 
