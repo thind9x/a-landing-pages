@@ -38,13 +38,25 @@
     <div id="myAntoree"></div>
 
     <script type="text/babel">
-      function HeaderPage() {
+      const useModal = (data: boolean) => {
         const [isShowModal, setIshowModal] = React.useState(false);
+        const handleModal = () => {
+          setIshowModal(!isShowModal);
+        };
+        const closeModal = () =>{
+          setIshowModal(false)
+        }
+
+        return { isShowModal, handleModal,closeModal };
+      };
+
+      function HeaderPage() {
         const [modalMessg, setModalMessg] = React.useState({
           title: "",
           message: "",
           modalModel: "",
         });
+        const {handleModal,isShowModal,closeModal} = useModal();
         const Modal = (dataModal: any) => {
           return (
             <>
@@ -59,7 +71,7 @@
                   >
                     <span
                       className="close"
-                      onClick={() => setIshowModal(false)}
+                      onClick={() => handleModal()}
                     >
                       &times;
                     </span>
@@ -81,9 +93,7 @@
           const emailValid = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
           return emailValid.test(email);
         };
-        function closeModal() {
-          setIshowModal(false);
-        }
+
         const hanlSubmitForm = async (e) => {
           e.preventDefault();
           let name = $("#name");
@@ -153,7 +163,7 @@
               );
               const data = await resp.json();
               if (data) {
-                setIshowModal(true);
+                handleModal()
                 setModalMessg({
                   title: "Đăng ký thành công",
                   message:
@@ -1224,6 +1234,99 @@
         );
       }
       function RegisterPage() {
+        const validatePhoneNum = (phoneInput: string) => {
+          const re = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+          return re.test(phoneInput);
+        };
+        const validateEmail = (email: string) => {
+          const emailValid = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+          return emailValid.test(email);
+        };
+        const {handleModal,isShowModal,closeModal} = useModal();
+
+        const hanlSubmitFormFooter = async (e) => {
+          e.preventDefault();
+          let name = $("#fname");
+          let phone = $("#mobilePhone");
+          let email = $("#email");
+          let msgs = $("#messages");
+          const isValidPhone = validatePhoneNum(phone.val());
+          const isValidEmail = validateEmail(email.val());
+
+          if (name.val() === "") {
+            $("#errorName").html(`Vui lòng nhập họ tên`);
+            name.css("border", "2px solid red");
+
+            return false;
+          }
+          if (phone.val() === "") {
+            $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
+            phone.css("border", "2px solid red");
+            return false;
+          }
+
+          if (!isValidPhone) {
+            $("#errorPhone").html(`Vui lòng nhập đúng định dạng số điện thoại`);
+            phone.css("border", "2px solid red");
+            return false;
+          }
+          if (msgs.val() === "") {
+            $("#errorMessage").html(`Vui lòng nhập nội dung tin nhắn`);
+            msgs.css("border", "2px solid red");
+
+            return false;
+          }
+          if (msgs?.length > 3000) {
+            $("#errorMessage").html(
+              `Nội dung ký tự đã vượt quá giới hạn cho phép`
+            );
+            msgs.css("border", "2px solid red");
+            return false;
+          } else {
+            try {
+              const resp = await fetch(
+                "https://api-v2.prod.antoree.tech/public/learning-requests",
+                {
+                  method: "post",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    name: name.val(),
+                    email: "thind@antoree.com",
+                    phone: phone.val(),
+                    question: msgs.val(),
+                    tags: "",
+                    utm_source: "LDPKid",
+                    utm_medium: "LDPKid",
+                    utm_campaign: "LDPKid",
+                    utm_email: "",
+                    utm_term: "",
+                    key_mess: "",
+                    track_user: "LDPKid",
+                    campaign_id: "",
+                    campaign_link_id: "",
+                    partner_id: "",
+                  }),
+                }
+              );
+              const data = await resp.json();
+              if (data) {
+                // setModalMessg({
+                //   title: "Đăng ký thành công",
+                //   message:
+                //     "Cảm ơn bạn đã đăng ký, chúng tôi sẽ sớm liên hệ lại với bạn",
+                //   modalModel: "success",
+                // });
+                $("#formAntoree").trigger("reset");
+                setTimeout(closeModal, 5000);
+              }
+            } catch (e) {}
+            return true;
+          }
+        };
+
         return (
           <section className="registerPage">
             <div className="pageBody">
@@ -1236,11 +1339,16 @@
               </p>
               <div className="formContainer">
                 <div className="formContent">
-                  <form className="formPageBody">
+                  <form
+                    className="formPageBody"
+                    onSubmit={hanlSubmitFormFooter}
+                    method="post"
+                  >
                     <div className="formGroup">
                       <label className="labelText">Họ tên</label>
                       <br />
                       <input
+                        id={"fname"}
                         className="formControl"
                         placeholder="Nhập họ tên"
                       />
@@ -1249,6 +1357,7 @@
                       <label className="labelText">Số điện thoại</label>
                       <br />
                       <input
+                        id={"mobilePhone"}
                         className="formControl"
                         placeholder="Số điện thoại"
                       />
@@ -1257,6 +1366,7 @@
                       <label className="labelText">Lời nhắn</label>
                       <br />
                       <textarea
+                        id={"messages"}
                         className="formControl"
                         placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kì lời nhắn hoặc thắc mắc nào"
                       ></textarea>
