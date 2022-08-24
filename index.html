@@ -38,25 +38,37 @@
     <div id="myAntoree"></div>
 
     <script type="text/babel">
-      const useModal = (data: boolean) => {
+      const useModal = () => {
         const [isShowModal, setIshowModal] = React.useState(false);
-        const handleModal = () => {
-          setIshowModal(!isShowModal);
-        };
-        const closeModal = () =>{
-          setIshowModal(false)
-        }
-
-        return { isShowModal, handleModal,closeModal };
-      };
-
-      function HeaderPage() {
         const [modalMessg, setModalMessg] = React.useState({
           title: "",
           message: "",
           modalModel: "",
         });
-        const {handleModal,isShowModal,closeModal} = useModal();
+        const handleModal = () => {
+          setIshowModal(!isShowModal);
+        };
+        const closeModal = () => {
+          setIshowModal(false);
+        };
+
+        return {
+          isShowModal,
+          handleModal,
+          closeModal,
+          setModalMessg,
+          modalMessg,
+        };
+      };
+
+      function HeaderPage() {
+        const {
+          handleModal,
+          isShowModal,
+          closeModal,
+          setModalMessg,
+          modalMessg,
+        } = useModal();
         const Modal = (dataModal: any) => {
           return (
             <>
@@ -69,10 +81,7 @@
                         : `modal-header-alert`
                     }
                   >
-                    <span
-                      className="close"
-                      onClick={() => handleModal()}
-                    >
+                    <span className="close" onClick={() => handleModal()}>
                       &times;
                     </span>
                     <h2 id="modalHeader">{modalMessg?.title}</h2>
@@ -163,7 +172,8 @@
               );
               const data = await resp.json();
               if (data) {
-                handleModal()
+                handleModal();
+
                 setModalMessg({
                   title: "Đăng ký thành công",
                   message:
@@ -497,7 +507,6 @@
                                   id="my-video"
                                   className="video-js vjs-default-skin vjs-big-play-centered videoItem"
                                   controls
-                                  width="240px"
                                   preload="auto"
                                   data-setup="{}"
                                 >
@@ -568,7 +577,6 @@
                                 id="my-video"
                                 className="video-js vjs-default-skin vjs-big-play-centered videoItem"
                                 controls
-                                width="330px"
                                 preload="auto"
                                 data-setup="{}"
                               >
@@ -613,7 +621,6 @@
               setDataVideoRp(item);
             });
           };
-          console.log(dataVideoRp);
           fetchApi();
         }, []);
         return (
@@ -1242,7 +1249,8 @@
           const emailValid = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
           return emailValid.test(email);
         };
-        const {handleModal,isShowModal,closeModal} = useModal();
+        const { handleModal, isShowModal, closeModal } = useModal();
+        console.log(isShowModal);
 
         const hanlSubmitFormFooter = async (e) => {
           e.preventDefault();
@@ -1254,32 +1262,25 @@
           const isValidEmail = validateEmail(email.val());
 
           if (name.val() === "") {
-            $("#errorName").html(`Vui lòng nhập họ tên`);
             name.css("border", "2px solid red");
 
             return false;
           }
           if (phone.val() === "") {
-            $("#errorPhone").html(`Vui lòng nhập số điện thoại`);
             phone.css("border", "2px solid red");
             return false;
           }
 
           if (!isValidPhone) {
-            $("#errorPhone").html(`Vui lòng nhập đúng định dạng số điện thoại`);
             phone.css("border", "2px solid red");
             return false;
           }
           if (msgs.val() === "") {
-            $("#errorMessage").html(`Vui lòng nhập nội dung tin nhắn`);
             msgs.css("border", "2px solid red");
 
             return false;
           }
           if (msgs?.length > 3000) {
-            $("#errorMessage").html(
-              `Nội dung ký tự đã vượt quá giới hạn cho phép`
-            );
             msgs.css("border", "2px solid red");
             return false;
           } else {
@@ -1313,6 +1314,7 @@
               );
               const data = await resp.json();
               if (data) {
+                handleModal();
                 // setModalMessg({
                 //   title: "Đăng ký thành công",
                 //   message:
