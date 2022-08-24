@@ -371,7 +371,6 @@ body::-webkit-scrollbar-thumb {
 .newsEvent {
   background: #fbfaf8;
   height: 100%;
-  max-height: 626px;
 }
 .registerBody {
   display: flex;
@@ -471,7 +470,6 @@ body::-webkit-scrollbar-thumb {
   padding: 24px;
 
   width: max-content;
-  height: 458px;
 
   background: #173a24;
   /* Shadow / Bottom default */
@@ -567,7 +565,6 @@ body::-webkit-scrollbar-thumb {
 .feedBackContainer {
   display: flex;
   justify-content: center;
-  padding: 50px;
   margin: auto;
 }
 .feedBackVideo {
@@ -999,7 +996,7 @@ body::-webkit-scrollbar-thumb {
 }
 .benefit{
   background-color: #F2EFE6;
-  height: 450px;
+  height: auto;
 }
 .benefitContainer{
   display: flex;
@@ -1070,8 +1067,32 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
     margin: auto;
   }
+  .contentItemLeft{
+    background: #FBFAF8;
+    background-size: 450px;
+    width: 100%;
+    height: 450px;
+    margin-top: 50px;
+    margin-left: 0px;
+  }
   .antoreeClassItem{
     display: block;
+  }
+  .benefitContent{
+    display: block;
+    margin: auto;
+  }
+  .feedBackVideoContainer{
+    display: flex;
+    justify-content: center;
+    padding: 100px;
+    margin: auto;
+  }
+  .feedBackVideo{
+    display: block;
+  }
+  .feedBackVideoItem{
+    margin-top: 10px;
   }
   .pageContainer{
     width: 100vw;
@@ -1119,7 +1140,7 @@ body::-webkit-scrollbar-thumb {
     margin: auto;
   }
   .newsEvent {
-    height: 100vh;
+    height: auto;
   }
   .newsEventContent {
     font-family: "Inter";
