@@ -192,130 +192,134 @@
           <>
             <section className="headerPage">
               <div className="pageBody">
-                <div className="logo">
-                  <p className="logoAntoree animate__animated animate__bounceInDown">
-                    Antoree
-                  </p>
-                  <p className="animate__animated animate__bounceInLeft">
-                    LEARN ENGLISH ONLINE 1-ON-1
-                  </p>
-                </div>
-                <div className="welcome">
-                  <h5 className="titleHeader animate__animated animate__backInLeft">
-                    HỌC TIẾNG ANH NHƯ TIẾNG MẸ ĐẺ
-                  </h5>
-                  <p className="soloGan animate__animated animate__flash">
-                    Antoree sẽ đồng hành cùng con trên con đường chinh phục
-                    tiếng Anh!
-                  </p>
-                </div>
-                <div className="formPage">
-                  <h1 className="headerTitleForm">Đăng ký nhận tư vấn</h1>
-                  <div>
-                    <form
-                      method="post"
-                      id={"formAntoree"}
-                      onSubmit={hanlSubmitForm}
-                    >
-                      <div className="formContainer">
-                        <div className="formGroup">
-                          <label className="labelText">Họ tên</label>
-                          <br />
-                          <input
-                            id="name"
-                            className="formControl"
-                            placeholder="Nhập họ tên"
-                            aria-autocomplete="none"
-                            onChange={() => {
-                              $("#errorName").html(``);
-                              $("#name").removeAttr("style");
-                            }}
-                          />
-                          <p
-                            id={"errorName"}
-                            style={{ color: "red", fontSize: "12px" }}
-                          ></p>
-                        </div>
-                        <div className="formGroup">
-                          <label className="labelText">Số điện thoại</label>
-                          <br />
-                          <input
-                            id="phoneNumber"
-                            className="formControl"
-                            placeholder="Số điện thoại"
-                            onChange={(e) => {
-                              let phone = $("#phoneNumber").val();
-                              const isValid = validatePhoneNum(
-                                e?.target?.value
-                              );
-                              if (!isValid && phone !== "") {
-                                $("#errorPhone").html(
-                                  `Vui lòng nhập sdt  hợp lệ`
-                                );
-                              } else {
-                                $("#errorPhone").html(``);
-                                $("#phoneNumber").removeAttr("style");
-                              }
-                            }}
-                          />
-                          <p
-                            id={"errorPhone"}
-                            style={{ color: "red", fontSize: "12px" }}
-                          ></p>
-                        </div>
-                        <div className="formGroup">
-                          <label className="labelText">
-                            Lời nhắn (
-                            <span
-                              style={{
-                                fontSize: "13px",
-                                fontWeight: "normal",
-                                color: "#F8AE06",
-                                marginLeft: "2px",
-                              }}
-                              id={"count"}
-                            >
-                              0
-                            </span>
-                            /3000)
-                          </label>
-                          <br />
-                          <textarea
-                            className="formControlTextarea"
-                            id="msg"
-                            onChange={() => {
-                              let msgcount = $("#msg").val();
-                              $("#count").html(msgcount?.length);
+                <div className="headerPageContainer">
+                  <div className="headerPageContent">
+                    <div className="logo">
+                      <p className="logoAntoree animate__animated animate__bounceInDown">
+                        Antoree
+                      </p>
+                      <p className="animate__animated animate__bounceInLeft">
+                        LEARN ENGLISH ONLINE 1-ON-1
+                      </p>
+                    </div>
+                    <div className="welcome">
+                      <h5 className="titleHeader animate__animated animate__backInLeft">
+                        HỌC TIẾNG ANH NHƯ TIẾNG MẸ ĐẺ
+                      </h5>
+                      <p className="soloGan animate__animated animate__flash">
+                        Antoree sẽ đồng hành cùng con trên con đường chinh phục
+                        tiếng Anh!
+                      </p>
+                    </div>
+                    <div className="formPage">
+                      <h1 className="headerTitleForm">Đăng ký nhận tư vấn</h1>
+                      <div>
+                        <form
+                          method="post"
+                          id={"formAntoree"}
+                          onSubmit={hanlSubmitForm}
+                        >
+                          <div className="formContainer">
+                            <div className="formGroup">
+                              <label className="labelText">Họ tên</label>
+                              <br />
+                              <input
+                                id="name"
+                                className="formControl"
+                                placeholder="Nhập họ tên"
+                                aria-autocomplete="none"
+                                onChange={() => {
+                                  $("#errorName").html(``);
+                                  $("#name").removeAttr("style");
+                                }}
+                              />
+                              <p
+                                id={"errorName"}
+                                style={{ color: "red", fontSize: "12px" }}
+                              ></p>
+                            </div>
+                            <div className="formGroup">
+                              <label className="labelText">Số điện thoại</label>
+                              <br />
+                              <input
+                                id="phoneNumber"
+                                className="formControl"
+                                placeholder="Số điện thoại"
+                                onChange={(e) => {
+                                  let phone = $("#phoneNumber").val();
+                                  const isValid = validatePhoneNum(
+                                    e?.target?.value
+                                  );
+                                  if (!isValid && phone !== "") {
+                                    $("#errorPhone").html(
+                                      `Vui lòng nhập sdt  hợp lệ`
+                                    );
+                                  } else {
+                                    $("#errorPhone").html(``);
+                                    $("#phoneNumber").removeAttr("style");
+                                  }
+                                }}
+                              />
+                              <p
+                                id={"errorPhone"}
+                                style={{ color: "red", fontSize: "12px" }}
+                              ></p>
+                            </div>
+                            <div className="formGroup">
+                              <label className="labelText">
+                                Lời nhắn (
+                                <span
+                                  style={{
+                                    fontSize: "13px",
+                                    fontWeight: "normal",
+                                    color: "#F8AE06",
+                                    marginLeft: "2px",
+                                  }}
+                                  id={"count"}
+                                >
+                                  0
+                                </span>
+                                /3000)
+                              </label>
+                              <br />
+                              <textarea
+                                className="formControlTextarea"
+                                id="msg"
+                                onChange={() => {
+                                  let msgcount = $("#msg").val();
+                                  $("#count").html(msgcount?.length);
 
-                              if (msgcount?.length > 3000) {
-                                $("#errorMessage").html(
-                                  `Nội dung ký tự đã vượt quá giới hạn cho phép`
-                                );
-                                $("#count").css("color", "red");
-                                $("#msg").css("border", "2px solid red");
-                              } else {
-                                $("#errorMessage").html(``);
-                                $("#msg").removeAttr("style");
-                                $("#count").css("color", "#F8AE06");
-                              }
-                            }}
-                            placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kỳ lời nhắn hoặc thắc mắc nào"
-                          ></textarea>
-                          <p
-                            id={"errorMessage"}
-                            style={{ color: "red", fontSize: "12px" }}
-                          ></p>
-                        </div>
-                        <div className="formGroupFooter">
-                          <button
-                            className="buttonAntoreeWarning"
-                            id="buttonSubmit"
-                          >
-                            Đăng ký ngay
-                          </button>
-                        </div>
+                                  if (msgcount?.length > 3000) {
+                                    $("#errorMessage").html(
+                                      `Nội dung ký tự đã vượt quá giới hạn cho phép`
+                                    );
+                                    $("#count").css("color", "red");
+                                    $("#msg").css("border", "2px solid red");
+                                  } else {
+                                    $("#errorMessage").html(``);
+                                    $("#msg").removeAttr("style");
+                                    $("#count").css("color", "#F8AE06");
+                                  }
+                                }}
+                                placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kỳ lời nhắn hoặc thắc mắc nào"
+                              ></textarea>
+                              <p
+                                id={"errorMessage"}
+                                style={{ color: "red", fontSize: "12px" }}
+                              ></p>
+                            </div>
+                            <div className="formGroupFooter">
+                              <button
+                                className="buttonAntoreeWarning"
+                                id="buttonSubmit"
+                              >
+                                Đăng ký ngay
+                              </button>
+                            </div>
+                          </div>
+                        </form>
                       </div>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
