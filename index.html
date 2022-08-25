@@ -324,106 +324,63 @@
           </>
         );
       }
-      function Benefit() {
-        return (
-          <>
-            <section className="benefit">
-              <h1 className="benefitTitle">
-                XÓA TAN BỆNH SỢ TIẾNG ANH TẠI ANTOREE
-              </h1>
+      class Benefit1 extends React.Component {
+        render() {
+          return (
+            <div className="benefit1">
               <div className="pageBody">
-                <div className="benefitContainer">
-                  <div className="benefitContent">
-                    <div className="benefitItem">
-                      <div className="benefitImg">
-                        <img
-                          style={{ width: "65px", height: "65px" }}
-                          src="images/note1.png"
-                          alt="antoree"
-                        />
+                <h1 className="benefit1Title">HỌC VIÊN CỦA ANTOREE SẼ ĐƯỢC</h1>
+                <div className="benefit1Container">
+                  <div className="benefit1Content">
+                    <div className="benefit1Item">
+                      <div className="headerItem">LỘ TRÌNH CÁ NHÂN HÓA</div>
+                      <div className="benefit1ItemImg">
+                        <img src="images/icons/flag.png" alt="antoree" />
                       </div>
-                      <div className="benefitDetail">
-                        <p className="benefitTextContent">
-                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
-                          viên
-                        </p>
+                      <div className="benefit1ItemContent">
+                        Lộ trình học tập được cá nhân hóa tùy vào trình độ tiếng
+                        Anh hiện tại và khả năng tiếp thu ngôn ngữ của học viên
                       </div>
                     </div>
-                    <div className="benefitItem">
-                      <img
-                        src="images/line.png"
-                        alt={"antore"}
-                        style={{ marginTop: "20px" }}
-                        className="benefitImg"
-                      />
-                    </div>
-                    <div className="benefitItem">
-                      <div className="benefitImg">
-                        <img
-                          style={{ width: "65px", height: "65px" }}
-                          src="images/search.png"
-                          alt="antoree"
-                        />
+                    <div className="benefit1Item">
+                      <div className="headerItem">TIẾT KIỆM CHI PHÍ</div>
+                      <div className="benefit1ItemImg">
+                        <img src="images/icons/dolla.png" alt="antoree" />
                       </div>
-                      <div className="benefitDetail">
-                        <p className="benefitTextContent">
-                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
-                          viên
-                        </p>
+                      <div className="benefit1ItemContent">
+                        Tiết kiệm được chi phí và thời gian cho phụ huynh khi
+                        không phải đưa rước học viên. Đạt hiệu quả cao khi phụ
+                        huynh có thể kiểm soát việc học tập của học viên
                       </div>
                     </div>
-                    <div className="benefitItem">
-                      <img
-                        src="images/line.png"
-                        alt={"antore"}
-                        style={{ marginTop: "20px" }}
-                        className="benefitImg"
-                      />
-                    </div>
-                    <div className="benefitItem">
-                      <div className="benefitImg">
-                        <img
-                          style={{ width: "65px", height: "65px" }}
-                          src="images/trial.png"
-                          alt="antoree"
-                        />
+                    <div className="benefit1Item">
+                      <div className="headerItem">TĂNG PHẢN XẠ GIAO TIẾP</div>
+                      <div className="benefit1ItemImg">
+                        <img src="images/icons/note.png" alt="antoree" />
                       </div>
-                      <div className="benefitDetail">
-                        <p className="benefitTextContent">
-                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
-                          viên
-                        </p>
+                      <div className="benefit1ItemContent">
+                        Giúp trẻ nắm bắt những câu giao tiếp hàng ngày, lên đến
+                        60 chủ đề giao tiếp cơ bản. Môi trường luyện tập phát âm
+                        và giao tác hiệu quả cao
                       </div>
                     </div>
-                    <div className="benefitItem">
-                      <img
-                        src="images/line.png"
-                        alt={"antore"}
-                        style={{ marginTop: "20px" }}
-                        className="benefitImg"
-                      />
-                    </div>
-                    <div className="benefitItem">
-                      <div className="benefitImg">
-                        <img
-                          style={{ width: "65px", height: "65px" }}
-                          src="images/gift-box.png"
-                          alt="antoree"
-                        />
+                    <div className="benefit1Item">
+                      <div className="headerItem">HỌC TẬP LINH HOẠT</div>
+                      <div className="benefit1ItemImg">
+                        <img src="images/icons/tv.png" alt="antoree" />
                       </div>
-                      <div className="benefitDetail">
-                        <p className="benefitTextContent">
-                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
-                          viên
-                        </p>
+                      <div className="benefit1ItemContent">
+                        Học viên chỉ cần thiết bị kết nối Internet để có thể học
+                        tại nhà trong khung giờ tự chọn từ 05 đến 23 giờ, 1 tuần
+                        học từ 2-3 buổi, 1 buổi kéo dài 30 - 60 phút.
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </section>
-          </>
-        );
+            </div>
+          );
+        }
       }
       function Classes() {
         const [isMouseIndex, setMouseMoveIndex] = React.useState("");
@@ -608,28 +565,113 @@
           </>
         );
       }
-      function FeedBack() {
-        const [dataVideoRp, setDataVideoRp] = React.useState([]);
-        React.useEffect(() => {
-          const fetchApi = async () => {
-            const resp = await fetch(
-              "https://api.phuongmychi.vn/api/video-free"
-            );
-            const respData = await resp.json();
-            const dataVideo = respData?.videos;
-            dataVideo?.map((item: any) => {
-              setDataVideoRp(item);
-            });
-          };
-          fetchApi();
-        }, []);
+      function Benefit() {
         return (
           <>
-            <section className="feedBack">
+            <section className="benefit">
+              <h1 className="benefitTitle">
+                XÓA TAN BỆNH SỢ TIẾNG ANH TẠI ANTOREE
+              </h1>
               <div className="pageBody">
-                <h1 className="feedBackTitle">
-                  PHỤ HUYNH VÀ HỌC VIÊN NÓI GÌ VỀ ANTOREE
-                </h1>
+                <div className="benefitContainer">
+                  <div className="benefitContent">
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/note1.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                    <div className="benefitItem">
+                      <img
+                        src="images/line.png"
+                        alt={"antore"}
+                        style={{ marginTop: "20px" }}
+                        className="benefitImg"
+                      />
+                    </div>
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/search.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                    <div className="benefitItem">
+                      <img
+                        src="images/line.png"
+                        alt={"antore"}
+                        style={{ marginTop: "20px" }}
+                        className="benefitImg"
+                      />
+                    </div>
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/trial.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                    <div className="benefitItem">
+                      <img
+                        src="images/line.png"
+                        alt={"antore"}
+                        style={{ marginTop: "20px" }}
+                        className="benefitImg"
+                      />
+                    </div>
+                    <div className="benefitItem">
+                      <div className="benefitImg">
+                        <img
+                          style={{ width: "65px", height: "65px" }}
+                          src="images/gift-box.png"
+                          alt="antoree"
+                        />
+                      </div>
+                      <div className="benefitDetail">
+                        <p className="benefitTextContent">
+                          Ghi nhận thông tin và nhu cầu học tiếng Anh của học
+                          viên
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        );
+      }
+      class Outcome extends React.Component {
+        render() {
+          return (
+            <div className="outCome">
+              <div className="pageBody">
+                <h1 className="feedBackTitle">THÀNH QUẢ CỦA HỌC VIÊN</h1>
                 <div className="feedBackVideoContainer">
                   <div className="feedBackVideo">
                     <div className="feedBackVideoItem">
@@ -703,6 +745,20 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          );
+        }
+      }
+      function FeedBack() {
+        return (
+          <>
+            <section className="feedBack">
+              <div className="pageBody">
+                <h1 className="feedBackTitle">
+                  PHỤ HUYNH VÀ HỌC VIÊN NÓI GÌ VỀ ANTOREE
+                </h1>
+
                 <div className="feedBackContainer">
                   <div className="feedBackContentItem">
                     <div className="feedBackContent">
@@ -1315,12 +1371,6 @@
               const data = await resp.json();
               if (data) {
                 handleModal();
-                // setModalMessg({
-                //   title: "Đăng ký thành công",
-                //   message:
-                //     "Cảm ơn bạn đã đăng ký, chúng tôi sẽ sớm liên hệ lại với bạn",
-                //   modalModel: "success",
-                // });
                 $("#formAntoree").trigger("reset");
                 setTimeout(closeModal, 5000);
               }
@@ -1530,24 +1580,6 @@
             error: "",
           };
         }
-        componentDidMount = async () => {
-          try {
-            const resp = await fetch(
-              "https://api.phuongmychi.vn/api/video-free"
-            );
-            const respDatata = await resp.json();
-            if (respDatata) {
-              this.setState({
-                loading: false,
-              });
-            }
-          } catch (e) {
-            this.setState({
-              loading: false,
-              error: "error in server",
-            });
-          }
-        };
 
         render() {
           const { error, loading } = this.state;
@@ -1555,8 +1587,10 @@
           return (
             <div className="pageContainer">
               <HeaderPage />
+              <Benefit1 />
               <Classes />
               <Benefit />
+              <Outcome />
               <FeedBack />
               <AntoreeStatics />
               <AntoreePartner />
