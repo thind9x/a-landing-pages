@@ -2,6 +2,11 @@
 <html lang="vi">
   <head>
     <title>Antoree</title>
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=no;user-scalable=0;"
+    />
+    <meta charset="UTF-8" />
     <script
       crossorigin
       src="https://unpkg.com/react@17/umd/react.production.min.js"
@@ -11,7 +16,6 @@
       src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
     ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -27,12 +31,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/less"></script>
     <link rel="stylesheet" type="text/css" href="css/kid-landing.css" />
-    <!--    <script>-->
-
-    <!--      $(document).ready(function (){-->
-    <!--        -->
-    <!--      });-->
-    <!--    </script>-->
   </head>
   <body>
     <div id="myAntoree"></div>
@@ -132,7 +130,6 @@
           if (msgs.val() === "") {
             $("#errorMessage").html(`Vui lòng nhập nội dung tin nhắn`);
             msgs.css("border", "2px solid red");
-
             return false;
           }
           if (msgs?.length > 3000) {
@@ -170,10 +167,11 @@
                   }),
                 }
               );
+
               const data = await resp.json();
               if (data) {
                 handleModal();
-
+                console.log(data);
                 setModalMessg({
                   title: "Đăng ký thành công",
                   message:
@@ -183,7 +181,9 @@
                 $("#formAntoree").trigger("reset");
                 setTimeout(closeModal, 5000);
               }
-            } catch (e) {}
+            } catch (e) {
+              // console.log("server error");
+            }
             return true;
           }
         };
@@ -211,113 +211,124 @@
                         tiếng Anh!
                       </p>
                     </div>
-                    <div className="formPage">
-                      <h1 className="headerTitleForm">Đăng ký nhận tư vấn</h1>
-                      <div>
-                        <form
-                          method="post"
-                          id={"formAntoree"}
-                          onSubmit={hanlSubmitForm}
-                        >
-                          <div className="formContainer">
-                            <div className="formGroup">
-                              <label className="labelText">Họ tên</label>
-                              <br />
-                              <input
-                                id="name"
-                                className="formControl"
-                                placeholder="Nhập họ tên"
-                                aria-autocomplete="none"
-                                onChange={() => {
-                                  $("#errorName").html(``);
-                                  $("#name").removeAttr("style");
-                                }}
-                              />
-                              <p
-                                id={"errorName"}
-                                style={{ color: "red", fontSize: "12px" }}
-                              ></p>
-                            </div>
-                            <div className="formGroup">
-                              <label className="labelText">Số điện thoại</label>
-                              <br />
-                              <input
-                                id="phoneNumber"
-                                className="formControl"
-                                placeholder="Số điện thoại"
-                                onChange={(e) => {
-                                  let phone = $("#phoneNumber").val();
-                                  const isValid = validatePhoneNum(
-                                    e?.target?.value
-                                  );
-                                  if (!isValid && phone !== "") {
-                                    $("#errorPhone").html(
-                                      `Vui lòng nhập sdt  hợp lệ`
-                                    );
-                                  } else {
-                                    $("#errorPhone").html(``);
-                                    $("#phoneNumber").removeAttr("style");
-                                  }
-                                }}
-                              />
-                              <p
-                                id={"errorPhone"}
-                                style={{ color: "red", fontSize: "12px" }}
-                              ></p>
-                            </div>
-                            <div className="formGroup">
-                              <label className="labelText">
-                                Lời nhắn (
-                                <span
-                                  style={{
-                                    fontSize: "13px",
-                                    fontWeight: "normal",
-                                    color: "#F8AE06",
-                                    marginLeft: "2px",
+                    <div className="headerContent">
+                      <div className="formPage">
+                        <h1 className="headerTitleForm">Đăng ký nhận tư vấn</h1>
+                        <div>
+                          <form
+                            method="post"
+                            id={"formAntoree"}
+                            onSubmit={hanlSubmitForm}
+                          >
+                            <div className="formContainer">
+                              <div className="formGroup">
+                                <label className="labelText">Họ tên</label>
+                                <br />
+                                <input
+                                  id="name"
+                                  className="formControl"
+                                  placeholder="Nhập họ tên"
+                                  aria-autocomplete="none"
+                                  onChange={() => {
+                                    $("#errorName").html(``);
+                                    $("#name").removeAttr("style");
                                   }}
-                                  id={"count"}
-                                >
-                                  0
-                                </span>
-                                /3000)
-                              </label>
-                              <br />
-                              <textarea
-                                className="formControlTextarea"
-                                id="msg"
-                                onChange={() => {
-                                  let msgcount = $("#msg").val();
-                                  $("#count").html(msgcount?.length);
-
-                                  if (msgcount?.length > 3000) {
-                                    $("#errorMessage").html(
-                                      `Nội dung ký tự đã vượt quá giới hạn cho phép`
+                                />
+                                <p
+                                  id={"errorName"}
+                                  style={{ color: "red", fontSize: "12px" }}
+                                ></p>
+                              </div>
+                              <div className="formGroup">
+                                <label className="labelText">
+                                  Số điện thoại
+                                </label>
+                                <br />
+                                <input
+                                  id="phoneNumber"
+                                  className="formControl"
+                                  placeholder="Số điện thoại"
+                                  onChange={(e) => {
+                                    let phone = $("#phoneNumber").val();
+                                    const isValid = validatePhoneNum(
+                                      e?.target?.value
                                     );
-                                    $("#count").css("color", "red");
-                                    $("#msg").css("border", "2px solid red");
-                                  } else {
-                                    $("#errorMessage").html(``);
-                                    $("#msg").removeAttr("style");
-                                    $("#count").css("color", "#F8AE06");
-                                  }
-                                }}
-                                placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kỳ lời nhắn hoặc thắc mắc nào"
-                              ></textarea>
-                              <p
-                                id={"errorMessage"}
-                                style={{ color: "red", fontSize: "12px" }}
-                              ></p>
+                                    if (!isValid && phone !== "") {
+                                      $("#errorPhone").html(
+                                        `Vui lòng nhập sdt  hợp lệ`
+                                      );
+                                    } else {
+                                      $("#errorPhone").html(``);
+                                      $("#phoneNumber").removeAttr("style");
+                                    }
+                                  }}
+                                />
+                                <p
+                                  id={"errorPhone"}
+                                  style={{ color: "red", fontSize: "12px" }}
+                                ></p>
+                              </div>
+                              <div className="formGroup">
+                                <label className="labelText">
+                                  Lời nhắn (
+                                  <span
+                                    style={{
+                                      fontSize: "13px",
+                                      fontWeight: "normal",
+                                      color: "#F8AE06",
+                                      marginLeft: "2px",
+                                    }}
+                                    id={"count"}
+                                  >
+                                    0
+                                  </span>
+                                  /3000)
+                                </label>
+                                <br />
+                                <textarea
+                                  className="formControlTextarea"
+                                  id="msg"
+                                  onChange={() => {
+                                    let msgcount = $("#msg").val();
+                                    $("#count").html(msgcount?.length);
+
+                                    if (msgcount?.length > 3000) {
+                                      $("#errorMessage").html(
+                                        `Nội dung ký tự đã vượt quá giới hạn cho phép`
+                                      );
+                                      $("#count").css("color", "red");
+                                      $("#msg").css("border", "2px solid red");
+                                    } else {
+                                      $("#errorMessage").html(``);
+                                      $("#msg").removeAttr("style");
+                                      $("#count").css("color", "#F8AE06");
+                                    }
+                                  }}
+                                  placeholder="Cho chúng tôi biết thời điểm bạn có thể nghe máy cùng với bất kỳ lời nhắn hoặc thắc mắc nào"
+                                ></textarea>
+                                <p
+                                  id={"errorMessage"}
+                                  style={{ color: "red", fontSize: "12px" }}
+                                ></p>
+                              </div>
+                              <div className="formGroupFooter">
+                                <button
+                                  className="buttonAntoreeWarning"
+                                  id="buttonSubmit"
+                                >
+                                  Đăng ký ngay
+                                </button>
+                              </div>
                             </div>
-                            <div className="formGroupFooter">
-                              <button
-                                className="buttonAntoreeWarning"
-                                id="buttonSubmit"
-                              >
-                                Đăng ký ngay
-                              </button>
-                            </div>
-                          </div>
-                        </form>
+                          </form>
+                        </div>
+                      </div>
+                      <div className="imgHeader">
+                        <img
+                          src="images/imgfamily.png"
+                          alt="antoree"
+                          className="imgHero"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1374,6 +1385,7 @@
               );
               const data = await resp.json();
               if (data) {
+                console.log(data);
                 handleModal();
                 $("#formAntoree").trigger("reset");
                 setTimeout(closeModal, 5000);
